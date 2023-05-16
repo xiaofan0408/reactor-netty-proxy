@@ -1,6 +1,6 @@
 package com.xiaofan0408.channel;
 
-import reactor.connection.ConnectionEx;
+import com.xiaofan0408.connection.ConnectionEx;
 
 import java.net.InetSocketAddress;
 import java.util.Map;

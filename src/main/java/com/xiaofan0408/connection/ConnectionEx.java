@@ -1,16 +1,14 @@
 package com.xiaofan0408.connection;
 
+import com.xiaofan0408.context.ProxyCtx;
+import com.xiaofan0408.handler.ProxyHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import reactor.channel.ClientManager;
-import reactor.client.ReactorNettyProxyClient;
-import reactor.context.ProxyCtx;
 import reactor.core.publisher.*;
-import reactor.handler.ProxyHandler;
 import reactor.netty.Connection;
 import reactor.netty.NettyInbound;
 import reactor.netty.NettyOutbound;
@@ -36,7 +34,6 @@ public class ConnectionEx {
     public ConnectionEx(Connection connection,ProxyHandler proxyHandler) {
         this.connection = connection;
         this.proxyHandler = proxyHandler;
-        this.alloc = this.connection.outbound().alloc();
         if (logger.isTraceEnabled()) {
             connection.addHandlerFirst(
                     LoggingHandler.class.getSimpleName(),

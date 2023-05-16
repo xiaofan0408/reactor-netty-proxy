@@ -1,6 +1,7 @@
 package com.xiaofan0408;
 
-import reactor.server.ReactorProxyServer;
+
+import com.xiaofan0408.config.ProxyConfig;
 
 /**
  * @author: xuzefan
@@ -9,7 +10,13 @@ import reactor.server.ReactorProxyServer;
 public class Main {
 
     public static void main(String[] args) {
-        ReactorProxyServer reactorProxyServer = new ReactorProxyServer(443);
+        ProxyConfig proxyConfig = ProxyConfig.builder()
+                .port(10888)
+                .proxyType("http")
+                .wiretap(true)
+                .build();
+
+        ReactorProxyServer reactorProxyServer = new ReactorProxyServer(proxyConfig);
         reactorProxyServer.start();
         reactorProxyServer.listen();
     }

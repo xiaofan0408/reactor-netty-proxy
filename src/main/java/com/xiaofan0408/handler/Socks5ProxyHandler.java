@@ -1,18 +1,20 @@
+package com.xiaofan0408.handler;
+
+import com.xiaofan0408.client.ReactorNettyProxyClient;
+import com.xiaofan0408.context.ProxyCtx;
+import com.xiaofan0408.handler.ProxyHandler;
+import com.xiaofan0408.model.socks.SocksConnectionRequest;
+import com.xiaofan0408.model.socks.SocksConnectionResponse;
+import com.xiaofan0408.model.socks.SocksInitRequest;
+import com.xiaofan0408.model.socks.SocksInitResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import reactor.channel.ClientManager;
-import reactor.client.ReactorNettyProxyClient;
-import reactor.context.ProxyCtx;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.netty.Connection;
 import reactor.netty.NettyInbound;
 import reactor.netty.NettyOutbound;
-import reactor.socks.SocksConnectionRequest;
-import reactor.socks.SocksConnectionResponse;
-import reactor.socks.SocksInitRequest;
-import reactor.socks.SocksInitResponse;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +25,7 @@ import java.util.Map;
  * @author: xuzefan
  * @date: 2023/5/16 10:37
  */
-public class Socks5ProxyHandler implements ProxyHandler{
+public class Socks5ProxyHandler implements ProxyHandler {
 
     private boolean isInit = false;
 

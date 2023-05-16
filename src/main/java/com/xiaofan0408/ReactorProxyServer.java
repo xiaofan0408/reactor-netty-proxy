@@ -1,26 +1,20 @@
 package com.xiaofan0408;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+
+import com.xiaofan0408.channel.ChannelManager;
+import com.xiaofan0408.config.ProxyConfig;
+import com.xiaofan0408.connection.ConnectionEx;
+import com.xiaofan0408.handler.HttpsProxyHandler;
+import com.xiaofan0408.handler.ProxyHandler;
+import com.xiaofan0408.handler.Socks5ProxyHandler;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.reactivestreams.Publisher;
-import reactor.bridge.ConnectionBridge;
-import reactor.bridge.ProxyConnectionBridge;
-import reactor.channel.ChannelManager;
-import reactor.connection.ConnectionEx;
 import reactor.core.Disposable;
-import reactor.handler.HttpsProxyHandler;
-import reactor.handler.ProxyHandler;
-import reactor.handler.Socks5ProxyHandler;
 import reactor.netty.*;
 import reactor.netty.tcp.TcpServer;
 
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * @author: xuzefan
@@ -29,11 +23,6 @@ import java.util.function.Function;
 
 @Slf4j
 public class ReactorProxyServer implements Server {
-
-    /**
-     * Connection bridge to connect the proxy server and clients.
-     */
-    private final ConnectionBridge bridge;
 
     /**
      * Port which the server will listen to.
@@ -51,18 +40,20 @@ public class ReactorProxyServer implements Server {
     @NonNull
     private Boolean wiretap = false;
 
+    private ProxyConfig proxyConfig;
+
     /**
      * Constructs a proxy server redirecting the received port to the target URL.
      *
      * @param prt
      * port to listen to
      */
-    public ReactorProxyServer(final Integer prt) {
+    public ReactorProxyServer(ProxyConfig proxyConfig) {
         super();
 
-        port = Objects.requireNonNull(prt);
+        port = Objects.requireNonNull(proxyConfig.getPort());
 
-        bridge = new ProxyConnectionBridge();
+        wiretap = proxyConfig.isWiretap();
     }
 
     @Override
@@ -86,7 +77,7 @@ public class ReactorProxyServer implements Server {
         log.debug("Binding to port {}", port);
 
         server = TcpServer.create()
-                // Bridge connection
+                // add connection
                 .doOnConnection(this::addConnections)
                 // Listen to events
 //                .doOnBind(c -> listener.onStart())
@@ -123,7 +114,13 @@ public class ReactorProxyServer implements Server {
      */
     private final void addConnections(final Connection serverConn) {
         log.debug("add connection");
-        ProxyHandler proxyHandler = new HttpsProxyHandler();
+        ProxyHandler proxyHandler = null;
+        if (proxyConfig.getProxyType().equals("socks")) {
+            proxyHandler = new Socks5ProxyHandler();
+        } else if (proxyConfig.getProxyType().equals("http")){
+            proxyHandler = new HttpsProxyHandler();
+        }
+
         InetSocketAddress socketAddress = (InetSocketAddress)serverConn.channel().remoteAddress();
         ConnectionEx connectionEx = new ConnectionEx(serverConn,proxyHandler);
         ChannelManager.put(socketAddress.toString(),connectionEx);
