@@ -26,25 +26,31 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId>
-      <version>0.9.11.RELEASE</version>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.10</version>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+     <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version>
-      <scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.30</version>
+    </dependency>
+    <dependency>
+        <!-- Reactor Netty core -->
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty-core</artifactId>
+        <version>1.0.24</version>
+    </dependency>
+    <dependency>
+        <!-- Reactor Netty core -->
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty-http</artifactId>
+        <version>1.0.24</version>
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
